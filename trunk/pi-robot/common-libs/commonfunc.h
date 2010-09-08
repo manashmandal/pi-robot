@@ -3,13 +3,13 @@
 //Delay required for the robot to turn 1 degree in 1 motor power
 #define DELAY_PER_ANGLE_PER_POWER 218.88
 
-//Sencer numbers
-#define SENCER_5 5
-#define SENCER_6 6
-#define SENCER_7 7
+//Sensor numbers
+#define SENSOR_5 5
+#define SENSOR_6 6
+#define SENSOR_7 7
 
-//Initializes the digital sencers
-void init_sencers()
+//Initializes the digital sensors
+void init_sensors()
 {
 	DDRC &= ~(1<< PORTC5);
 	PORTC &= ~(1<< PORTC5);
@@ -46,8 +46,32 @@ void turn_right(int power)
 	set_motors(0,0);
 }
 
+// Back up slightly to the left
+void back_up_left()
+{
+	set_motors(-50,-90);
+}
+
+// Back up slightly to the right
+void back_up_right()
+{
+	set_motors(-90,-50);
+}
+
+// Turn to the right in place
+void turn_right_in_place()
+{
+	set_motors(50, -50);
+}
+
+// Turn to the left in place
+void turn_left_in_place()
+{
+	set_motors(-50, 50);
+}
+
 //Scans 360 degree and reports an array of distance data
-int* scan_360(int sencer)
+int* scan_360(int sensor)
 {
 	int data[10];
 
@@ -76,20 +100,20 @@ void count_down(int count)
 	}
 }
 
-//Read forward sencer data
-int read_forward_sencer()
+//Read forward sensor data
+int read_forward_sensor()
 {
-	return analog_read(SENCER_6);
+	return analog_read(SENSOR_6);
 }
 
-//Read left sencer data
-int read_left_sencer()
+//Read left sensor data
+int read_left_sensor()
 {
-	return analog_read(SENCER_7);
+	return analog_read(SENSOR_7);
 }
 
-//Read right sencer data
-int read_right_sencer()
+//Read right sensor data
+int read_right_sensor()
 {
-	return analog_read(SENCER_5);
+	return analog_read(SENSOR_5);
 }
