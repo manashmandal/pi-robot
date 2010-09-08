@@ -36,6 +36,9 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
+## Include Directories
+INCLUDES = -I"C:\share\robotz\pi-robot\pi-robot\bomb-squad\.." 
+
 ## Libraries
 LIBS = -lpololu_atmega168 
 
