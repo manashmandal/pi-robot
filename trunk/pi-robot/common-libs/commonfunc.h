@@ -11,6 +11,7 @@
 //Initializes the digital sensors
 void init_sensors()
 {
+	set_analog_mode(MODE_8_BIT);
 	DDRC &= ~(1<< PORTC5);
 	PORTC &= ~(1<< PORTC5);
 }
@@ -116,4 +117,24 @@ int read_left_sensor()
 int read_right_sensor()
 {
 	return analog_read(SENSOR_5);
+}
+
+void print_xy( int row, int col, char *message, int doClear)
+{
+	if(doClear)
+	{
+		clear();
+	}
+	lcd_goto_xy(row,col);
+	print(message);
+}
+
+void print_num_xy( int row, int col, long num, int doClear)
+{
+	if(doClear)
+	{
+		clear();
+	}
+	lcd_goto_xy(row,col);
+	print_long(num);
 }
