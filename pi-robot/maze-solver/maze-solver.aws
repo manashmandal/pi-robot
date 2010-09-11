@@ -1,1 +1,1 @@
-<AVRWorkspace><IOSettings><CurrentRegisters/></IOSettings><part name=""/><Files/></AVRWorkspace>
+<AVRWorkspace><IOSettings><CurrentRegisters/></IOSettings><part name=""/><Files><File00000 Name="C:\robot\pi-robot\maze-solver\maze-solver.c" Position="258 67 1606 618" LineCol="26 8" State="Maximized"/><File00001 Name="C:\robot\pi-robot\common-libs\commonfunc.h" Position="291 122 1473 485" LineCol="131 17" State="Maximized"/></Files></AVRWorkspace>
