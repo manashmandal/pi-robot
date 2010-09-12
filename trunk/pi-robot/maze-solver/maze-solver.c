@@ -3,16 +3,20 @@
 
 #define BASE_SPEED 50
 #define FORWARD_SENSOR_THRESHOLD 60
-#define LEFT_SENSOR_TARGET 60
+//#define LEFT_SENSOR_TARGET 60
 
-#define P_GAIN 1/10
-#define D_GAIN 0
+#define P_GAIN 1/20
+#define D_GAIN 2/3
 
 int main()
 {
 	// initialize sensors and wait for button press
     init_sensors();
-	wait_with_message("Maze 1.0");
+	wait_with_message("Maze 2.0");
+
+	//instead of a static value, the robot determines 
+	//what's the initial distance at the begining
+	int left_sensor_target = read_left_sensor();
 
     int previous_left_sensor = 0;
 
@@ -20,23 +24,24 @@ int main()
     {
 
 		// read
-        int left_sensor = read_left_sensor(); // 0 (far away) - 650 (close)
+        int left_sensor = read_left_sensor(); // 0 (far away) - 160 (I think close at 8 bit)
 
 		// calculate PD-controller value
-        int p = left_sensor - LEFT_SENSOR_TARGET;
+        int p = left_sensor - left_sensor_target;
         int d = left_sensor - previous_left_sensor;
 
-        int pd = p * 1/3;
+        int pd = p * P_GAIN + d * D_GAIN;
 
+		//If the pd is higher or lower than base speed 
+		//it will stop the corrosponding wheels
 		if (pd > BASE_SPEED)
 		{
 			pd = BASE_SPEED;
-		}
-
-		if (pd < -BASE_SPEED)
+		}else if (pd < -BASE_SPEED)
 		{
 			pd = -BASE_SPEED;
 		}
+
 
 		if(get_ms() % 250 == 0)
 		{
