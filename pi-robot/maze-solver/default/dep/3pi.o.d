@@ -1,4 +1,4 @@
-bomb-squad.o: ../bomb-squad.c \
+3pi.o: ../3pi.c \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/analog.h \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/avr/io.h \
@@ -39,8 +39,7 @@ bomb-squad.o: ../bomb-squad.c \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/pulsein.h \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/OrangutanPulseIn.h \
   c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h \
-  c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h \
-  C:\robotz\pi-robot\pi-robot\bomb-squad\../common-libs/commonfunc.h
+  c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h
 
 c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h:
 
@@ -123,5 +122,3 @@ c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPuls
 c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h:
 
 c:/program\ files/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h:
-
-C:\robotz\pi-robot\pi-robot\bomb-squad\../common-libs/commonfunc.h:
