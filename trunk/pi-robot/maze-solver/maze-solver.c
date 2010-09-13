@@ -12,7 +12,7 @@ int main()
 {
 	// initialize sensors and wait for button press
     init_sensors();
-	wait_with_message("Maze 2.0");
+	wait_with_message("Maze 2.1");
 
 	//instead of a static value, the robot determines 
 	//what's the initial distance at the begining

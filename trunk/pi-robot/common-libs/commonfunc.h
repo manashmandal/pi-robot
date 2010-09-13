@@ -9,6 +9,7 @@
 #define SENSOR_7 7
 
 //Initializes the digital sensors
+//MODE_8_BIT => 0=far away, 150=close
 void init_sensors()
 {
 	set_analog_mode(MODE_8_BIT);
@@ -25,12 +26,67 @@ void wait_with_message(char *str)
 	print(str);
 
 	while(!button_is_pressed(BUTTON_B));
+	delay_ms(500);
+}
+
+int get_value_from_user(char *msg)
+{
+	int value = 0;
+	
+	while(1)
+	{
+		clear();
+		
+		// print name
+		lcd_goto_xy(0,0);
+		print(msg);
+		print("=?");
+		
+		// print current value
+		lcd_goto_xy(0,1);
+		print_long(value);
+		lcd_show_cursor(CURSOR_BLINKING);
+	
+		// wait for all buttons to be released, then a press
+		while(button_is_pressed(ANY_BUTTON));
+		char button = wait_for_button_press(ANY_BUTTON);
+
+		if(button & BUTTON_A)
+		{
+			play("!c32");
+			value = value - 10;
+		}
+		else if(button & BUTTON_B)
+		{
+			lcd_hide_cursor();
+			clear();
+			play("!e32");
+
+			return value;
+		}
+		else if(button & BUTTON_C)
+		{
+			play("!g32");
+			value = value + 10;
+		}
+
+		if(value < 0)
+		{
+			value = 0;
+		}
+	}
+}
+
+//Stop both motors
+void halt()
+{
+	set_motors(0,0);
 }
 
 //Turn the robot to left
-void turn_left(int power)
+void turn_left(int power, int angle)
 {
-	int delay = (DELAY_PER_ANGLE_PER_POWER * 90)/power;
+	int delay = (DELAY_PER_ANGLE_PER_POWER * angle)/power;
 
 	set_motors(-power,power);
 	delay_ms(delay);
@@ -38,9 +94,9 @@ void turn_left(int power)
 }
 
 //Turn the robot to left
-void turn_right(int power)
+void turn_right(int power, int angle)
 {
-	int delay = (DELAY_PER_ANGLE_PER_POWER * 90)/power;
+	int delay = (DELAY_PER_ANGLE_PER_POWER * angle)/power;
 
 	set_motors(power,-power);
 	delay_ms(delay);
@@ -74,16 +130,23 @@ void turn_left_in_place()
 //Scans 360 degree and reports an array of distance data
 int* scan_360(int sensor)
 {
-	int data[10];
-
-	set_motors(-40,40);
-
-	int delay = (DELAY_PER_ANGLE_PER_POWER * 360)/40;
-
-	delay_ms(1970);
-
-	set_motors(0,0);
-	return data;
+	int i, *pdata, data[25];
+	int power = 40;
+	
+	for(i=0; i<25; i++)
+	{
+		// rotate LEFT 15 degrees then stop
+		int delay = (DELAY_PER_ANGLE_PER_POWER * 15)/power;
+		set_motors(-power,power);
+		delay_ms(delay);
+		set_motors(0,0);
+		
+		// scan forward and store value
+		data[i] = analog_read(SENSOR_6);
+	}
+	
+	pdata = &data[0];
+	return pdata;
 }
 
 //Display a countdown for count, increment by one second

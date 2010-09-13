@@ -1,11 +1,11 @@
 ###############################################################################
-# Makefile for the project bomb-squad
+# Makefile for the project maze-solver
 ###############################################################################
 
 ## General Flags
-PROJECT = bomb-squad
+PROJECT = maze-solver
 MCU = atmega168
-TARGET = bomb-squad.elf
+TARGET = maze-solver.elf
 CC = avr-gcc
 
 CPP = avr-g++
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=bomb-squad.map
+LDFLAGS +=  -Wl,-Map=maze-solver.map
 
 
 ## Intel Hex file production flags
@@ -37,22 +37,25 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\robotz\pi-robot\pi-robot\bomb-squad\.." 
+INCLUDES = -I"C:\robotz\pi-robot\pi-robot\maze-solver\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = bomb-squad.o 
+OBJECTS = maze-solver.o 3pi.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) bomb-squad.hex bomb-squad.eep bomb-squad.lss size
+all: $(TARGET) maze-solver.hex maze-solver.eep maze-solver.lss size
 
 ## Compile
-bomb-squad.o: ../bomb-squad.c
+maze-solver.o: ../maze-solver.c
+	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
+
+3pi.o: ../3pi.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -75,7 +78,7 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) bomb-squad.elf dep/* bomb-squad.hex bomb-squad.eep bomb-squad.lss bomb-squad.map
+	-rm -rf $(OBJECTS) maze-solver.elf dep/* maze-solver.hex maze-solver.eep maze-solver.lss maze-solver.map
 
 
 ## Other dependencies
