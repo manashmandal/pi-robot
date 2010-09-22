@@ -1,14 +1,14 @@
 #include <pololu/3pi.h>
 #include <avr/pgmspace.h>
 
-#define MOTOR_SPEED 100
+//#define MOTOR_SPEED 125
 
 
 const char charge[] PROGMEM = "v12 L16 o4 cfa>cra>c4";
 const char oops[] PROGMEM = "v12 L16 o4 f";//rc32<b32c32c#8cr8.erf";
 const char doh[] PROGMEM = "v12 L16 o4 c8.e8f#8ag8.e8c8<a<f#<f#<f#<g";
 
-int get_value_from_user(char *msg, int default_value, int increment);
+float get_value_from_user(char *msg, float default_value, float increment);
 
 /********************************************************************
 The main function
@@ -25,9 +25,10 @@ int main()
 	play_from_program_space(oops);
 	
 	//Some PID related variable initialization
-	int Kp = get_value_from_user("Kp=?    ", 1, 1);
-	int Ki = get_value_from_user("Ki=?    ", 0, 1);
-	int Kd = get_value_from_user("Kd=?    ", 2, 1);
+	int MOTOR_SPEED = (int) get_value_from_user("Speed=? ", 125.0, 1.0);
+	float Kp = get_value_from_user("Kp=0.0? ", 0.7, 0.01);
+	float Ki = get_value_from_user("Ki=0.0? ", 0.0, 0.01);
+	float Kd = get_value_from_user("Kd=0.0? ", 0.9, 0.01);
 
 	int p;
 	int i = 0;
@@ -97,9 +98,9 @@ int main()
 /*******************************************************************
 //This function gets value from user.
 ********************************************************************/
-int get_value_from_user(char *msg, int default_value, int increment)
+float get_value_from_user(char *msg, float default_value, float increment)
 {
-    int value = default_value;
+    float value = default_value;
 
     while(1)
     {
@@ -112,7 +113,7 @@ int get_value_from_user(char *msg, int default_value, int increment)
 
         // print current value
         lcd_goto_xy(0,1);
-        print_long(value);
+        print_long(value * 1/increment);
         lcd_show_cursor(CURSOR_BLINKING);
 
         // wait for all buttons to be released, then a press
@@ -140,11 +141,11 @@ int get_value_from_user(char *msg, int default_value, int increment)
 
         if(value < -32000)
         {
-                value = -32000 + (32000 % increment);
+                value = -32000 + (32000 % (int)increment);
         }
         if(value > 32000)
         {
-               value = 32000 - (32000 % increment);
+               value = 32000 - (32000 % (int)increment);
         }
     }
 }
