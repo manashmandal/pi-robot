@@ -37,13 +37,13 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\robotz\pi-robot\pi-robot\maze-solver\.." 
+INCLUDES = -I"C:\robot\pi-robot\maze-solver\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = maze-solver.o 3pi.o 
+OBJECTS = maze-solver.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -53,9 +53,6 @@ all: $(TARGET) maze-solver.hex maze-solver.eep maze-solver.lss size
 
 ## Compile
 maze-solver.o: ../maze-solver.c
-	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
-
-3pi.o: ../3pi.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link

@@ -1,11 +1,11 @@
 ###############################################################################
-# Makefile for the project bomb-squad
+# Makefile for the project track-wall-angle
 ###############################################################################
 
 ## General Flags
-PROJECT = bomb-squad
+PROJECT = track-wall-angle
 MCU = atmega168
-TARGET = bomb-squad.elf
+TARGET = track-wall-angle.elf
 CC = avr-gcc
 
 CPP = avr-g++
@@ -15,7 +15,7 @@ COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -gdwarf-2 -std=gnu99 -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
+CFLAGS += -Wall -gdwarf-2 -Os -std=gnu99 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
 CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d 
 
 ## Assembly specific flags
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=bomb-squad.map
+LDFLAGS +=  -Wl,-Map=track-wall-angle.map
 
 
 ## Intel Hex file production flags
@@ -36,23 +36,20 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
-## Include Directories
-INCLUDES = -I"C:\robot\pi-robot\bomb-squad\.." 
-
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = bomb-squad.o 
+OBJECTS = track-wall-angle.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) bomb-squad.hex bomb-squad.eep bomb-squad.lss size
+all: $(TARGET) track-wall-angle.hex track-wall-angle.eep track-wall-angle.lss size
 
 ## Compile
-bomb-squad.o: ../bomb-squad.c
+track-wall-angle.o: ../track-wall-angle.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -75,7 +72,7 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) bomb-squad.elf dep/* bomb-squad.hex bomb-squad.eep bomb-squad.lss bomb-squad.map
+	-rm -rf $(OBJECTS) track-wall-angle.elf dep/* track-wall-angle.hex track-wall-angle.eep track-wall-angle.lss track-wall-angle.map
 
 
 ## Other dependencies

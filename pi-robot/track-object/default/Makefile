@@ -1,11 +1,11 @@
 ###############################################################################
-# Makefile for the project bomb-squad
+# Makefile for the project track-object
 ###############################################################################
 
 ## General Flags
-PROJECT = bomb-squad
+PROJECT = track-object
 MCU = atmega168
-TARGET = bomb-squad.elf
+TARGET = track-object.elf
 CC = avr-gcc
 
 CPP = avr-g++
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=bomb-squad.map
+LDFLAGS +=  -Wl,-Map=track-object.map
 
 
 ## Intel Hex file production flags
@@ -37,22 +37,22 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\robot\pi-robot\bomb-squad\.." 
+INCLUDES = -I"C:\robot\pi-robot\track-object\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = bomb-squad.o 
+OBJECTS = track-object.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) bomb-squad.hex bomb-squad.eep bomb-squad.lss size
+all: $(TARGET) track-object.hex track-object.eep track-object.lss size
 
 ## Compile
-bomb-squad.o: ../bomb-squad.c
+track-object.o: ../track-object.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -75,7 +75,7 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) bomb-squad.elf dep/* bomb-squad.hex bomb-squad.eep bomb-squad.lss bomb-squad.map
+	-rm -rf $(OBJECTS) track-object.elf dep/* track-object.hex track-object.eep track-object.lss track-object.map
 
 
 ## Other dependencies

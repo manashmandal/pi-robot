@@ -24,7 +24,13 @@ void init_sensors()
 //Displays a message and waits for B button to press
 void wait_with_message(char *str)
 {
-	play("L16 ceg>c");
+	 play_frequency(200, 50, 14);
+	 delay_ms(75);
+	 play_frequency(300, 50, 14);
+
+	 play_frequency(200, 50, 14);
+	 delay_ms(75);
+	 play_frequency(300, 50, 14);
 
 	lcd_goto_xy(0,0);
 	print(str);

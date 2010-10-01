@@ -1,11 +1,11 @@
 ###############################################################################
-# Makefile for the project bomb-squad
+# Makefile for the project line-follower
 ###############################################################################
 
 ## General Flags
-PROJECT = bomb-squad
+PROJECT = line-follower
 MCU = atmega168
-TARGET = bomb-squad.elf
+TARGET = line-follower.elf
 CC = avr-gcc
 
 CPP = avr-g++
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=bomb-squad.map
+LDFLAGS +=  -Wl,-Map=line-follower.map
 
 
 ## Intel Hex file production flags
@@ -36,23 +36,20 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
-## Include Directories
-INCLUDES = -I"C:\robot\pi-robot\bomb-squad\.." 
-
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = bomb-squad.o 
+OBJECTS = line-follower.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) bomb-squad.hex bomb-squad.eep bomb-squad.lss size
+all: $(TARGET) line-follower.hex line-follower.eep line-follower.lss size
 
 ## Compile
-bomb-squad.o: ../bomb-squad.c
+line-follower.o: ../line-follower.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -75,7 +72,7 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) bomb-squad.elf dep/* bomb-squad.hex bomb-squad.eep bomb-squad.lss bomb-squad.map
+	-rm -rf $(OBJECTS) line-follower.elf dep/* line-follower.hex line-follower.eep line-follower.lss line-follower.map
 
 
 ## Other dependencies
