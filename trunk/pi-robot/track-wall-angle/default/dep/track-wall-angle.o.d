@@ -1,4 +1,4 @@
-maze-solver.o: ../maze-solver.c \
+track-wall-angle.o: ../track-wall-angle.c \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/analog.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/avr/io.h \
@@ -39,8 +39,7 @@ maze-solver.o: ../maze-solver.c \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/pulsein.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/OrangutanPulseIn.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h \
-  c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h \
-  C:\robot\pi-robot\maze-solver\../common-libs/commonfunc.h
+  c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h
 
 c:/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h:
 
@@ -123,5 +122,3 @@ c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/OrangutanPu
 c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h:
 
 c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h:
-
-C:\robot\pi-robot\maze-solver\../common-libs/commonfunc.h:
