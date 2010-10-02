@@ -1,5 +1,5 @@
 #include <pololu/3pi.h>
-#include <commonfunc.h>
+#include <common-libs/commonfunc.h>
 
 #define TIER_1_SPEED 110
 #define TIER_1_DISTANCE 20
@@ -16,12 +16,19 @@
 #define TIER_5_SPEED 25
 #define TIER_5_DISTANCE 140
 
-int main()
+#define TIER_6_SPEED 25
+//#define TIER_6_DISTANCE 125
+
+int main2()
 {
-	wait_with_message("Press B");
-	count_down(2);
+	//wait_with_message("Press B");
 	init_sensors();
 
+	//int TIER_6_SPEED = get_value_from_user("6speed=?",25, 1);
+	int TIER_6_DISTANCE = get_value_from_user("6dist=? ",135, 1);
+
+	count_down(2);
+ 
 	// Tier 1
 	set_motors(TIER_1_SPEED,TIER_1_SPEED);
 	while(analog_read(7) < TIER_1_DISTANCE);
@@ -41,6 +48,10 @@ int main()
 	// Tier 5
 	set_motors(TIER_5_SPEED,TIER_5_SPEED);
 	while(analog_read(7) < TIER_5_DISTANCE);
+
+	// Tier 6
+	set_motors(TIER_6_SPEED,TIER_6_SPEED);
+	while(analog_read(7) > TIER_6_DISTANCE);
 	halt();
 
 	// finally, blindly go a liiiiiittle bit closer
