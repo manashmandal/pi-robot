@@ -37,7 +37,7 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\robot\pi-robot\wall-detector\..\common-libs" 
+INCLUDES = -I"C:\robot\pi-robot\wall-detector\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 
