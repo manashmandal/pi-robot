@@ -33,18 +33,22 @@ int main()
 		left_speed = 110 - (0.54838709677419354838709677419355 * front);
 		right_speed = 110 - (0.54838709677419354838709677419355 * front);
 
-		if (set_point == 0 && front > 120)
+		if (set_point == 0 && front > 152)
 		{
 			set_point = 1;
+			set_motors(25,25);
+		}
+		else
+		{
+			set_motors(left_speed + balance,right_speed - balance);
 		}
 
-		if (set_point == 1 && front < 130)
+		if (set_point == 1 && front < 150)
 		{
 			break;
 		}
 
 
-		set_motors(left_speed + balance,right_speed - balance);
 	}
 
 
