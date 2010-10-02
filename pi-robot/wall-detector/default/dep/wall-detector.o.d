@@ -40,7 +40,7 @@ wall-detector.o: ../wall-detector.c \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/OrangutanPulseIn.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h \
   c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h \
-  C:\robot\pi-robot\wall-detector\..\common-libs/commonfunc.h
+  C:\robot\pi-robot\wall-detector\../common-libs/commonfunc.h
 
 c:/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h:
 
@@ -124,4 +124,4 @@ c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../Oranguta
 
 c:/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h:
 
-C:\robot\pi-robot\wall-detector\..\common-libs/commonfunc.h:
+C:\robot\pi-robot\wall-detector\../common-libs/commonfunc.h:
