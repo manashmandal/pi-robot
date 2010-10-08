@@ -1,4 +1,4 @@
-maze-solver.o: ../maze-solver.c \
+test-sensors.o: ../test-sensors.c \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/analog.h \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/avr/io.h \
@@ -40,7 +40,7 @@ maze-solver.o: ../maze-solver.c \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/OrangutanPulseIn.h \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseIn/../OrangutanTime/OrangutanTime.h \
   c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h \
-  C:\share\robotz\pi-robot\pi-robot\maze-solver\../common-libs/commonfunc.h
+  C:\share\robotz\pi-robot\pi-robot\test-sensors\../common-libs/commonfunc.h
 
 c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/3pi.h:
 
@@ -124,4 +124,4 @@ c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanPulseI
 
 c:/share/robotz/winavr-20100110/lib/gcc/../../avr/include/pololu/OrangutanSPIMaster/OrangutanSPIMaster.h:
 
-C:\share\robotz\pi-robot\pi-robot\maze-solver\../common-libs/commonfunc.h:
+C:\share\robotz\pi-robot\pi-robot\test-sensors\../common-libs/commonfunc.h:

@@ -1,142 +1,168 @@
 #include <pololu/3pi.h>
+#include <avr/pgmspace.h>
 #include <common-libs/commonfunc.h>
 
-/* 2-sensor layout is as follows:
- *
- *  | forward   ^
- *  |           |
- * W|    [ SENSOR_FRONT ]
- * A| <--[SENSOR_ONE    ]
- * L| <--[SENSOR_TWO    ]
- * L|
- *  | backwards
- */
+//#define MOTOR_SPEED 125
 
-//#define BASE_SPEED 50
-//#define FORWARD_SENSOR_THRESHOLD 120
-//#define DIFFERENCE_THRESHOLD -30
 
-//#define P_GAIN 1
-//#define D_GAIN 1
+const char charge[] PROGMEM = "v12 L16 o4 cfa>cra>c4";
+const char oops[] PROGMEM = "v12 L16 o4 f";//rc32<b32c32c#8cr8.erf";
+
+float get_float_from_user(char *msg, float default_value, float increment);
+
+/********************************************************************
+The main function
+********************************************************************/
 
 int main()
 {
-	// initialize sensors and wait for button press
-    init_sensors();
-	wait_with_message("Maze 3.4");
+	//Initializing the sensors
+	init_sensors();
 
-	// prompt for base speed
-	int BASE_SPEED = 50;//get_value_from_user("speed=? ", 50, 10);
-	int FORWARD_SENSOR_THRESHOLD = 100;//get_value_from_user("fwd max=?", 100, 10);
-	int DIFFERENCE_THRESHOLD = -40;//get_value_from_user("diff min=", -40, 5);
+	//Play a nice tone
+	play_from_program_space(oops);
+	while(is_playing());
+	
+	//Some PID related variable initialization
+	int MOTOR_SPEED = 100;//get_int_from_user("Speed=? ", 100, 1);
+	float Kp = 0.7;//get_float_from_user("Kp=0.0? ", 0.7, 0.01);
+	float Ki = 0.0;//get_float_from_user("Ki=0.0? ", 0.0, 0.01);
+	float Kd = 0.9;//get_float_from_user("Kd=0.0? ", 0.9, 0.01);
+	int FRONT_DISTANCE = get_int_from_user("Front=? ", 55, 5);
+	int p;
+	int i = 0;
+	int d;
+	int pid;
+	
+	//Wait till user chooses left or right
+	clear();
+	lcd_goto_xy(0,0);
+	print("A=left");
+	lcd_goto_xy(0,1);
+	print("C=right");
+	char button = wait_for_button_press(ANY_BUTTON);
+	int follow_left = 1; // default = left
+	if(button & BUTTON_C)
+		follow_left = 0;
+	wait_for_button_release(button);;
+	
+	//Wait till user presses B button
+	clear();
+	lcd_goto_xy(0,0);
+	print("Press B");
+	while(!button_is_pressed(BUTTON_B));
+	delay_ms(1000);
+	//play_from_program_space(charge);
+	//while(is_playing());
 
-	int dash1 = 475;//get_value_from_user("dash1=? ", 475, 25);
-	int dash2 = 875;//get_value_from_user("dash2=? ", 875, 25);
+	//Record the initial value of the side sensor
+	int initial_side_sensor = follow_left ? read_left() : read_right();
+	int previous_side_sensor = 0;
+	
+	while(1)
+	{
+		//Read the side sensor value
+		int side_sensor = follow_left ? read_left() : read_right();
 
-	int pnum = get_value_from_user("P num=? ", 1, 1);
-	int pden = get_value_from_user("Pdenom=?", 1, 1);
-	int dnum = get_value_from_user("D num=? ", 1, 1);
-	int dden = get_value_from_user("Ddenom=?", 1, 1);
+		//Read the front sensor value
+		int front_sensor = read_front();
 
-	float P_GAIN = pnum / pden;
-	float D_GAIN = dnum / dden;
+		//Print the sensor values to screen
+		if((get_ms() % 300) == 0)
+		{
+			clear();
+			lcd_goto_xy(0,0);
+			print_long(front_sensor);
+			lcd_goto_xy(5,0);
+			print_long(side_sensor);
+		}
 
-	int angle_for_left_90 = 80;//get_value_from_user("angle90=", 80, 5);
+		//Calculating PID from side sensor
+		pid = 0;
 
-	int target_difference = get_target_difference();
-	delay_ms(777);
+		p = side_sensor - initial_side_sensor;
+		i = i + p;
+		d = side_sensor - previous_side_sensor;
+		pid = (Kp * p) + (Ki * i) + (Kd * d);
+		
+		int L_speed = follow_left ? MOTOR_SPEED + pid : MOTOR_SPEED - pid;
+		int R_speed = follow_left ? MOTOR_SPEED - pid : MOTOR_SPEED + pid;
+		set_motors(L_speed ,R_speed);
 
-    int previous_difference = 0;
+		//While the front sensor reades value grater than 55 then turn right
+		while (front_sensor > FRONT_DISTANCE)
+		{
+			//Turn
+			int L_speed = follow_left ? MOTOR_SPEED : -MOTOR_SPEED;
+			int R_speed = follow_left ? -MOTOR_SPEED : MOTOR_SPEED;
+
+			set_motors(L_speed,R_speed);
+
+			front_sensor = read_front();
+		}
+
+		// store previous side sensor value
+		previous_side_sensor = side_sensor;
+
+	}//end while(1)
+
+}//end main
+
+
+/*******************************************************************
+//This function gets value from user.
+********************************************************************/
+float get_float_from_user(char *msg, float default_value, float increment)
+{
+    float value = default_value;
 
     while(1)
     {
-		// read left sensors
-		int s1 = read_sensor(SENSOR_ONE); // 0 (far away) - 150 (close)
-		int s2 = read_sensor(SENSOR_TWO); // 0 (far away) - 150 (close)
-        int difference = s1 - s2;
+        clear();
 
-		// print sensor readings periodically
-		if(get_ms() % 250 == 0)
-		{
-			print_num_xy(0,0,s1,1);
-			print_num_xy(0,1,s2,0);
-		}
+        // print name
+        lcd_goto_xy(0,0);
+        print(msg);
+        print("=?");
 
-		// if there's no wall to left, perform 90 degree left turn
-		if(difference < DIFFERENCE_THRESHOLD)
-		{
-			// stop
-			clear();
-			print("Go Left");
-			play(">g32>>c32");
-			halt();
-			//delay_ms(1000);
+        // print current value
+        lcd_goto_xy(0,1);
+        print_long(value * 1/increment);
+		print("/100");
+        lcd_show_cursor(CURSOR_BLINKING);
 
-			// go forward a bit
-			dash(50, dash1);
-			//delay_ms(1000);
+        // wait for all buttons to be released, then a press
+        while(button_is_pressed(ANY_BUTTON));
+        char button = wait_for_button_press(ANY_BUTTON);
 
-			// perform 90 degree turn
-			turn_left(BASE_SPEED, angle_for_left_90);
-			//delay_ms(1000);
+        if(button & BUTTON_A)
+        {
+                play("!c32");
+                value = value - increment;
+        }
+        else if(button & BUTTON_B)
+        {
+                lcd_hide_cursor();
+                clear();
+                play("!e32");
+                delay_ms(100);
+                return value;
+        }
+        else if(button & BUTTON_C)
+        {
+                play("!g32");
+                value = value + increment;
+        }
 
-			// go forward a bit
-			dash(50, dash2);
-			//delay_ms(1000);
+        if(value < -32000)
+        {
+                value = -32000 + (32000 % (int)increment);
+        }
+        if(value > 32000)
+        {
+               value = 32000 - (32000 % (int)increment);
+        }
+    }
+}
 
-			// continue...
-			previous_difference = 0;
-		}
-		// if there's a wall directly in front of us,  perform 90 degree right turn
-		else if(read_sensor(SENSOR_FRONT) > FORWARD_SENSOR_THRESHOLD)
-		{
-			// stop
-			clear();
-			print("Go Right");
-			play(">c32>>g32");
-			halt();
-
-			// perform 90 degree turn
-			turn_right(BASE_SPEED, 90);
-
-			// continue...
-			previous_difference = 0;
-		}
-		else
-		{
-			// calculate PD-controller value
-	        int p = difference - target_difference;
-	        int d = difference - previous_difference;
-
-	        int pd = p * P_GAIN + d * D_GAIN;
-
-			//If the pd is higher or lower than base speed
-			//it will stop the corresponding wheels
-			//if (pd > BASE_SPEED)
-			//{
-			//	pd = BASE_SPEED;
-			//}else if (pd < -BASE_SPEED)
-			//{
-			//	pd = -BASE_SPEED;
-			//}
-
-			// set new motor speeds
-			/*if (difference < target_difference){
-				pd = - BASE_SPEED / 4;
-			}
-			else if (difference > target_difference)
-			{
-				pd = BASE_SPEED / 4;
-			}
-			*/
-	        int left_motor_speed = BASE_SPEED + pd;
-	        int right_motor_speed = BASE_SPEED - pd;
-	        set_motors(left_motor_speed, right_motor_speed);
-
-			// store previous difference, for derivative calculation
-	        previous_difference = difference;
-		}
-
-    }//end while
-
-}//end main
+/******************************************************************/
