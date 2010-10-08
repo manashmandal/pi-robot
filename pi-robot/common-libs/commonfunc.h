@@ -4,13 +4,9 @@
 #define DELAY_PER_ANGLE_PER_POWER 218.88
 
 //Sensor numbers
-#define SENSOR_5 5
-#define SENSOR_6 6
-#define SENSOR_7 7
-
-#define SENSOR_ONE 5
-#define SENSOR_TWO 6
+#define SENSOR_LEFT 6
 #define SENSOR_FRONT 7
+#define SENSOR_RIGHT 5
 
 //Initializes the digital sensors
 //MODE_8_BIT => 0=far away, 150=close
@@ -39,7 +35,7 @@ void wait_with_message(char *str)
 	delay_ms(500);
 }
 
-int get_value_from_user(char *msg, int default_value, int increment)
+int get_int_from_user(char *msg, int default_value, int increment)
 {
 	int value = default_value;
 
@@ -90,34 +86,6 @@ int get_value_from_user(char *msg, int default_value, int increment)
 		}
 	}
 }
-
-int get_target_difference()
-{
-
-	int s1 = 0;
-	int s2 = 0;
-
-	while(!button_is_pressed(BUTTON_B))
-	{
-		if(get_ms() % 500 == 0)
-		{
-			clear();
-			print_xy(0,0,"AlignBot");
-			lcd_goto_xy(0,1);
-			print_long(read_sensor(SENSOR_ONE)-read_sensor(SENSOR_TWO));
-		}
-	}
-
-	s1 = read_sensor(SENSOR_ONE); // 0 (far away) - 150 (close)
-	s2 = read_sensor(SENSOR_TWO); // 0 (far away) - 150 (close)
-
-	play(">g32>>c32");
-
-	return s1-s2;
-
-
-}
-
 
 //Stop both motors
 void halt()
@@ -192,7 +160,7 @@ int* scan_360(int sensor)
 		set_motors(0,0);
 
 		// scan forward and store value
-		data[i] = analog_read(SENSOR_6);
+		data[i] = analog_read(SENSOR_FRONT);
 	}
 
 	pdata = &data[0];
@@ -202,15 +170,14 @@ int* scan_360(int sensor)
 //Display a countdown for count, increment by one second
 void count_down(int count)
 {
-	int i = 1;
 	clear();
-	while(i <= count)
+	while(count > 0)
 	{
 		lcd_goto_xy(0,0);
-		print_long(i);
+		print_long(count);
 		delay_ms(1000);
 		clear();
-		i++;
+		count--;
 	}
 }
 
@@ -220,21 +187,21 @@ int read_sensor(int sensor)
 }
 
 //Read forward sensor data
-int read_forward_sensor()
+int read_front()
 {
-	return analog_read(SENSOR_6);
+	return analog_read(SENSOR_FRONT);
 }
 
 //Read left sensor data
-int read_left_sensor()
+int read_left()
 {
-	return analog_read(SENSOR_7);
+	return analog_read(SENSOR_LEFT);
 }
 
 //Read right sensor data
-int read_right_sensor()
+int read_right()
 {
-	return analog_read(SENSOR_5);
+	return analog_read(SENSOR_RIGHT);
 }
 
 void print_xy( int row, int col, char *message, int doClear)

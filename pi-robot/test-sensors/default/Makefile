@@ -1,11 +1,11 @@
 ###############################################################################
-# Makefile for the project maze-solver
+# Makefile for the project test-sensors
 ###############################################################################
 
 ## General Flags
-PROJECT = maze-solver
+PROJECT = test-sensors
 MCU = atmega168
-TARGET = maze-solver.elf
+TARGET = test-sensors.elf
 CC = avr-gcc
 
 CPP = avr-g++
@@ -25,7 +25,7 @@ ASMFLAGS += -x assembler-with-cpp -Wa,-gdwarf2
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS +=  -Wl,-Map=maze-solver.map
+LDFLAGS +=  -Wl,-Map=test-sensors.map
 
 
 ## Intel Hex file production flags
@@ -37,22 +37,22 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\share\robotz\pi-robot\pi-robot\maze-solver\.." 
+INCLUDES = -I"C:\share\robotz\pi-robot\pi-robot\test-sensors\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = maze-solver.o 
+OBJECTS = test-sensors.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) maze-solver.hex maze-solver.eep maze-solver.lss size
+all: $(TARGET) test-sensors.hex test-sensors.eep test-sensors.lss size
 
 ## Compile
-maze-solver.o: ../maze-solver.c
+test-sensors.o: ../test-sensors.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
@@ -75,7 +75,7 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) maze-solver.elf dep/* maze-solver.hex maze-solver.eep maze-solver.lss maze-solver.map
+	-rm -rf $(OBJECTS) test-sensors.elf dep/* test-sensors.hex test-sensors.eep test-sensors.lss test-sensors.map
 
 
 ## Other dependencies
