@@ -37,7 +37,7 @@ HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
 ## Include Directories
-INCLUDES = -I"C:\share\robotz\pi-robot\pi-robot\maze-solver\.." 
+INCLUDES = -I"C:\robot\pi-robot\maze-solver\.." 
 
 ## Libraries
 LIBS = -lpololu_atmega168 

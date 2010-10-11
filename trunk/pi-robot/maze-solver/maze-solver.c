@@ -25,10 +25,11 @@ int main()
 	
 	//Some PID related variable initialization
 	int MOTOR_SPEED = 100;//get_int_from_user("Speed=? ", 100, 1);
-	float Kp = 0.7;//get_float_from_user("Kp=0.0? ", 0.7, 0.01);
-	float Ki = 0.0;//get_float_from_user("Ki=0.0? ", 0.0, 0.01);
-	float Kd = 0.9;//get_float_from_user("Kd=0.0? ", 0.9, 0.01);
-	int FRONT_DISTANCE = get_int_from_user("Front=? ", 55, 5);
+	int MOTOR_SPEED_TURN = get_int_from_user("Trn Spd=", 80, 5);
+	float Kp = get_float_from_user("Kp=?    ", 0.7, 0.01);
+	float Ki = get_float_from_user("Ki=?    ", 0.0, 0.01);
+	float Kd = get_float_from_user("Kd=?    ", 0.8, 0.01);
+	int FRONT_DISTANCE = get_int_from_user("Front=? ", 50, 5);
 	int p;
 	int i = 0;
 	int d;
@@ -93,8 +94,8 @@ int main()
 		while (front_sensor > FRONT_DISTANCE)
 		{
 			//Turn
-			int L_speed = follow_left ? MOTOR_SPEED : -MOTOR_SPEED;
-			int R_speed = follow_left ? -MOTOR_SPEED : MOTOR_SPEED;
+			int L_speed = follow_left ? MOTOR_SPEED_TURN : -MOTOR_SPEED_TURN;
+			int R_speed = follow_left ? -MOTOR_SPEED_TURN : MOTOR_SPEED_TURN;
 
 			set_motors(L_speed,R_speed);
 

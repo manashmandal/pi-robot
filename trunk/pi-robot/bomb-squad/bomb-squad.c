@@ -1,38 +1,63 @@
 #include <pololu/3pi.h>
-#include <avr/pgmspace.h>
 #include <common-libs/commonfunc.h>
 
-#define DISTANCE 60
-
-main()
+int main()
 {
-
 	init_sensors();
-	wait_with_message("Bomb 0.6");
-	pololu_3pi_init(2000);
+	wait_with_message("Press B");
+	count_down(2);
 
-	//Start tracking
-	int front_sensor = 0;
-	set_motors(-50,50);
-	
-	long entered_object = 0;
-	long left_object = 0;
-	while (1)
+
+	int front = 0;
+	int left = 0;
+	int right = 0;
+	int balance = 0;
+
+	int left_speed = 0;
+	int right_speed = 0;
+
+	int set_point = 0;
+
+	while(1)
 	{
-		front_sensor = analog_read(7);
+		left = analog_read(6);
+		right = analog_read(5);
+		front = analog_read(7);
 
-		if (front_sensor > DISTANCE )
+		balance = 0;
+		if (left > 20 || right > 20)
+		{
+			balance = right - left - 20;
+		}
+
+		left_speed = 110;
+		right_speed = 110;
+
+		if (set_point == 0 && front > 162)
+		{
+			set_point = 1;
+			set_motors(25,25);
+		}
+		else
+		{
+			set_motors(left_speed + balance,right_speed - balance);
+		}
+
+		if (0)//set_point == 1 && front < 150)
 		{
 			break;
 		}
+
+
 	}
 
 
-	//Move to the object
-	set_motors(0,0);
-	delay_ms(300);
+	halt();
 
-	set_motors(50,50);
+	clear();
+	print("f=");
+	print_long(front);
 
-
+	// end
+	while(1);
 }
