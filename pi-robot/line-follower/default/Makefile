@@ -36,11 +36,14 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 
+## Include Directories
+INCLUDES = -I"C:\robot\pi-robot\line-follower-no-pid\.." 
+
 ## Libraries
 LIBS = -lpololu_atmega168 
 
 ## Objects that must be built in order to link
-OBJECTS = line-follower.o 
+OBJECTS = line-follower-no-pid.o 
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
@@ -49,7 +52,7 @@ LINKONLYOBJECTS =
 all: $(TARGET) line-follower.hex line-follower.eep line-follower.lss size
 
 ## Compile
-line-follower.o: ../line-follower.c
+line-follower-no-pid.o: ../line-follower-no-pid.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
 ##Link
