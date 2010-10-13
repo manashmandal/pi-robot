@@ -5,7 +5,7 @@ int main()
 {
 	init_sensors();
 
-	int SET_POINT_VALUE = get_int_from_user("SetPnt=?", 30, 5);
+	int SET_POINT_VALUE = get_int_from_user("SetPnt=?", 20, 5);
 	int END_POINT_VALUE = get_int_from_user("EndPnt=?", 145, 1);
 
 	wait_with_message("Press B");
@@ -34,13 +34,28 @@ int main()
 			balance = right - left - 20;
 		}
 
-		left_speed = (front < SET_POINT_VALUE) ? 110 - (1.0 * 0.54838709677419354838709677419355 * front) : 25;
-		right_speed = (front < SET_POINT_VALUE) ?  110 - (1.0 * 0.54838709677419354838709677419355 * front) : 25;
+		if(front < SET_POINT_VALUE)
+		{
+			left_speed = 110 - (1.0 * 0.54838709677419354838709677419355 * front);
+			right_speed = 110 - (1.0 * 0.54838709677419354838709677419355 * front);
+		}
+		else
+		{
+			while(left_speed > 25 || right_speed > 25)
+			{
+				left_speed--;
+				right_speed--;
+				set_motors(left_speed + balance,right_speed - balance);
+				play_frequency(200, 50, 14);
+			}
+
+		}
 
 		if (set_point == 0 && front > END_POINT_VALUE)
 		{
 			set_point = 1;
 			set_motors(25,25);
+			
 		}
 		else
 		{
